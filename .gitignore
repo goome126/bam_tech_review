@@ -188,10 +188,8 @@ exercise1/api/Icon?
 exercise1/api/.DS_Store
 # SASS Compiler cache
 exercise1/api/.sass-cache
-exercise1/api/
 # Visual Studio 2014 CTP
 exercise1/api/**/*.sln.ide
-exercise1/api/
 # Visual Studio temp something
 .vs/
 
