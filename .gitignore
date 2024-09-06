@@ -8,220 +8,217 @@
 # wget --no-check-certificate http://gist.githubusercontent.com/kmorcinek/2710267/raw/.gitignore
 
 # User-specific files
-*.suo
-*.user
-*.sln.docstates
+exercise1/api/*.suo
+exercise1/api/*.user
+exercise1/api/*.sln.docstates
 
 # Build results
-[Dd]ebug/
-[Rr]elease/
-x64/
-[Bb]in/
-[Oo]bj/
+exercise1/api/[Dd]ebug/
+exercise1/api/[Rr]elease/
+exercise1/api/x64/
+exercise1/api/[Bb]in/
+exercise1/api/[Oo]bj/
 # build folder is nowadays used for build scripts and should not be ignored
 #build/
 
 # NuGet Packages
-*.nupkg
+exercise1/api/*.nupkg
 # The packages folder can be ignored because of Package Restore
-**/packages/*
+exercise1/api/**/packages/*
 # except build/, which is used as an MSBuild target.
-!**/packages/build/
+exercise1/api/!**/packages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
 
 # MSTest test Results
-[Tt]est[Rr]esult*/
-[Bb]uild[Ll]og.*
+exercise1/api/[Tt]est[Rr]esult*/
+exercise1/api/[Bb]uild[Ll]og.*
 
-*_i.c
-*_p.c
-*.ilk
-*.meta
-*.obj
-*.pch
-*.pdb
-*.pgc
-*.pgd
-*.rsp
-*.sbr
-*.tlb
-*.tli
-*.tlh
-*.tmp
-*.tmp_proj
-*.log
-*.vspscc
-*.vssscc
-.builds
-*.pidb
-*.scc
+exercise1/api/*_i.c
+exercise1/api/*_p.c
+exercise1/api/*.ilk
+exercise1/api/*.meta
+exercise1/api/*.obj
+exercise1/api/*.pch
+exercise1/api/*.pdb
+exercise1/api/*.pgc
+exercise1/api/*.pgd
+exercise1/api/*.rsp
+exercise1/api/*.sbr
+exercise1/api/*.tlb
+exercise1/api/*.tli
+exercise1/api/*.tlh
+exercise1/api/*.tmp
+exercise1/api/*.tmp_proj
+exercise1/api/*.log
+exercise1/api/*.vspscc
+exercise1/api/*.vssscc
+exercise1/api/.builds
+exercise1/api/*.pidb
+exercise1/api/*.scc
 
 # Visual C++ cache files
-ipch/
-*.aps
-*.ncb
-*.opensdf
-*.sdf
-*.cachefile
+exercise1/api/ipch/
+exercise1/api/*.aps
+exercise1/api/*.ncb
+exercise1/api/*.opensdf
+exercise1/api/*.sdf
+exercise1/api/*.cachefile
 
 # Visual Studio profiler
-*.psess
-*.vsp
-*.vspx
+exercise1/api/*.psess
+exercise1/api/*.vsp
+exercise1/api/*.vspx
 
 # Guidance Automation Toolkit
-*.gpState
+exercise1/api/*.gpState
 
 # ReSharper is a .NET coding add-in
-_ReSharper*/
-*.[Rr]e[Ss]harper
+exercise1/api/_ReSharper*/
+exercise1/api/*.[Rr]e[Ss]harper
 
 # TeamCity is a build add-in
-_TeamCity*
+exercise1/api/_TeamCity*
 
 # DotCover is a Code Coverage Tool
-*.dotCover
+exercise1/api/*.dotCover
 
 # NCrunch
-*.ncrunch*
-.*crunch*.local.xml
+exercise1/api/*.ncrunch*
+exercise1/api/.*crunch*.local.xml
 
 # Installshield output folder
-[Ee]xpress/
+exercise1/api/[Ee]xpress/
 
 # DocProject is a documentation generator add-in
-DocProject/buildhelp/
-DocProject/Help/*.HxT
-DocProject/Help/*.HxC
-DocProject/Help/*.hhc
-DocProject/Help/*.hhk
-DocProject/Help/*.hhp
-DocProject/Help/Html2
-DocProject/Help/html
+exercise1/api/DocProject/buildhelp/
+exercise1/api/DocProject/Help/*.HxT
+exercise1/api/DocProject/Help/*.HxC
+exercise1/api/DocProject/Help/*.hhc
+exercise1/api/DocProject/Help/*.hhk
+exercise1/api/DocProject/Help/*.hhp
+exercise1/api/DocProject/Help/Html2
+exercise1/api/DocProject/Help/html
 
 # Click-Once directory
-publish/
+exercise1/api/publish/
 
 # Publish Web Output
-*.Publish.xml
+exercise1/api/*.Publish.xml
 
 # Windows Azure Build Output
-csx
-*.build.csdef
+exercise1/api/csx
+exercise1/api/*.build.csdef
 
 # Windows Store app package directory
-AppPackages/
+exercise1/api/AppPackages/
 
 # Others
-*.Cache
-ClientBin/
-[Ss]tyle[Cc]op.*
-~$*
-*~
-*.dbmdl
-*.[Pp]ublish.xml
-*.pfx
-*.publishsettings
-modulesbin/
-tempbin/
+exercise1/api/*.Cache
+exercise1/api/ClientBin/
+exercise1/api/[Ss]tyle[Cc]op.*
+exercise1/api/~$*
+exercise1/api/*~
+exercise1/api/*.dbmdl
+exercise1/api/*.[Pp]ublish.xml
+exercise1/api/*.pfx
+exercise1/api/*.publishsettings
+exercise1/api/modulesbin/
+exercise1/api/tempbin/
 
 # EPiServer Site file (VPP)
-AppData/
+exercise1/api/AppData/
 
 # RIA/Silverlight projects
-Generated_Code/
+exercise1/api/Generated_Code/
 
 # Backup & report files from converting an old project file to a newer
 # Visual Studio version. Backup files are not needed, because we have git ;-)
-_UpgradeReport_Files/
-Backup*/
-UpgradeLog*.XML
-UpgradeLog*.htm
+exercise1/api/_UpgradeReport_Files/
+exercise1/api/Backup*/
+exercise1/api/UpgradeLog*.XML
+exercise1/api/UpgradeLog*.htm
 
 # vim
-*.txt~
-*.swp
-*.swo
+exercise1/api/*.txt~
+exercise1/api/*.swp
+exercise1/api/*.swo
 
 # Temp files when opening LibreOffice on ubuntu
-.~lock.*
- 
+exercise1/api/.~lock.*
+
 # svn
-.svn
+exercise1/api/.svn
 
 # CVS - Source Control
-**/CVS/
+exercise1/api/**/CVS/
 
 # Remainings from resolving conflicts in Source Control
-*.orig
+exercise1/api/*.orig
 
 # SQL Server files
-**/App_Data/*.mdf
-**/App_Data/*.ldf
-**/App_Data/*.sdf
+exercise1/api/**/App_Data/*.mdf
+exercise1/api/**/App_Data/*.ldf
+exercise1/api/**/App_Data/*.sdf
 
 
 #LightSwitch generated files
-GeneratedArtifacts/
-_Pvt_Extensions/
-ModelManifest.xml
+exercise1/api/GeneratedArtifacts/
+exercise1/api/_Pvt_Extensions/
+exercise1/api/ModelManifest.xml
 
 # =========================
 # Windows detritus
 # =========================
 
 # Windows image file caches
-Thumbs.db
-ehthumbs.db
+exercise1/api/Thumbs.db
+exercise1/api/ehthumbs.db
 
 # Folder config file
-Desktop.ini
+exercise1/api/Desktop.ini
 
 # Recycle Bin used on file shares
-$RECYCLE.BIN/
+exercise1/api/$RECYCLE.BIN/
 
 # OS generated files #
-Icon?
+exercise1/api/Icon?
 
 # Mac desktop service store files
-.DS_Store
-
+exercise1/api/.DS_Store
 # SASS Compiler cache
-.sass-cache
-
+exercise1/api/.sass-cache
+exercise1/api/
 # Visual Studio 2014 CTP
-**/*.sln.ide
-
+exercise1/api/**/*.sln.ide
+exercise1/api/
 # Visual Studio temp something
 .vs/
 
-.vs/*
-
 # dotnet stuff
-project.lock.json
+exercise1/api/project.lock.json
 
 # VS 2015+
-*.vc.vc.opendb
-*.vc.db
+exercise1/api/*.vc.vc.opendb
+exercise1/api/*.vc.db
 
 # Rider
-.idea/
+exercise1/api/.idea/
 
 # Visual Studio Code
-.vscode/
+exercise1/api/.vscode/
 
 # Output folder used by Webpack or other FE stuff
-**/node_modules/*
-**/wwwroot/*
+exercise1/api/**/node_modules/*
+exercise1/api/**/wwwroot/*
 
 # SpecFlow specific
-*.feature.cs
-*.feature.xlsx.*
-*.Specs_*.html
+exercise1/api/*.feature.cs
+exercise1/api/*.feature.xlsx.*
+exercise1/api/*.Specs_*.html
 
 # UWP Projects
-AppPackages/
+exercise1/api/AppPackages/
 
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)

@@ -30,6 +30,8 @@ if (app.Environment.IsDevelopment())
 
 //test
 
+//wahoo
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
