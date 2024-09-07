@@ -52,14 +52,20 @@ namespace StargateAPI.Business.Commands
         }
         public async Task<CreateAstronautDutyResult> Handle(CreateAstronautDuty request, CancellationToken cancellationToken)
         {
+            #region Code for adding/creating someone's astronaut record.
 
-            var query = $"SELECT * FROM [Person] WHERE \'{request.Name}\' = Name";
+            // Why using raw queries when ef?
 
-            var person = await _context.Connection.QueryFirstOrDefaultAsync<Person>(query);
+            var person = await _context.People.AsNoTracking().Include(p => p.AstronautDetail).Include(p => p.AstronautDuties).FirstOrDefaultAsync(z => z.Name == request.Name, cancellationToken);
+            // Forward cancellation token to the query because it's best practice to do so.
 
-            query = $"SELECT * FROM [AstronautDetail] WHERE {person.Id} = PersonId";
+            if (person == null)
+            {
+                // An Astronaut Duty can only be created for an existing person.
+                throw new BadHttpRequestException("Bad Request");
+            }
 
-            var astronautDetail = await _context.Connection.QueryFirstOrDefaultAsync<AstronautDetail>(query);
+            var astronautDetail = person.AstronautDetail;
 
             if (astronautDetail == null)
             {
@@ -70,7 +76,9 @@ namespace StargateAPI.Business.Commands
                 astronautDetail.CareerStartDate = request.DutyStartDate.Date;
                 if (request.DutyTitle == "RETIRED")
                 {
-                    astronautDetail.CareerEndDate = request.DutyStartDate.Date;
+                    // Curious that they have the correct rule applied in the else below
+                    // but not in this case.
+                    astronautDetail.CareerEndDate = request.DutyStartDate.AddDays(-1).Date;
                 }
 
                 await _context.AstronautDetails.AddAsync(astronautDetail);
@@ -87,10 +95,13 @@ namespace StargateAPI.Business.Commands
                 _context.AstronautDetails.Update(astronautDetail);
             }
 
-            query = $"SELECT * FROM [AstronautDuty] WHERE {person.Id} = PersonId Order By DutyStartDate Desc";
+            // To be honest we should be saving the duty first and then updating the astronaut's detail
+            // but that's just my opinion.
 
-            var astronautDuty = await _context.Connection.QueryFirstOrDefaultAsync<AstronautDuty>(query);
+            #endregion
 
+            var astronautDuty = person.AstronautDuties.Where(ad => ad.DutyEndDate == null).FirstOrDefault();  
+            //Should probably check if astronautDuty returns more than one value and if so correct it.
             if (astronautDuty != null)
             {
                 astronautDuty.DutyEndDate = request.DutyStartDate.AddDays(-1).Date;
@@ -106,9 +117,9 @@ namespace StargateAPI.Business.Commands
                 DutyEndDate = null
             };
 
-            await _context.AstronautDuties.AddAsync(newAstronautDuty);
+            await _context.AstronautDuties.AddAsync(newAstronautDuty,cancellationToken);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new CreateAstronautDutyResult()
             {
