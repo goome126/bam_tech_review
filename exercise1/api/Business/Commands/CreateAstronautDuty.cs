@@ -55,16 +55,10 @@ namespace StargateAPI.Business.Commands
             #region Code for adding/creating someone's astronaut record.
 
             // Why using raw queries when ef?
-
-            var person = await _context.People.AsNoTracking().Include(p => p.AstronautDetail).Include(p => p.AstronautDuties).FirstOrDefaultAsync(z => z.Name == request.Name, cancellationToken);
-            // Forward cancellation token to the query because it's best practice to do so.
-
-            if (person == null)
-            {
-                // An Astronaut Duty can only be created for an existing person.
-                throw new BadHttpRequestException("Bad Request");
-            }
-
+            // Theoretically we'll never get to this point because of the preprocessor, but it's good practice to not have code where it could occur.
+            // Even if a step higher in the pipeline will cover it.
+            // This is why I'm not a fan of CQRS.
+            var person = await _context.People.AsNoTracking().Include(p => p.AstronautDetail).Include(p => p.AstronautDuties).FirstOrDefaultAsync(z => z.Name == request.Name, cancellationToken) ?? throw new BadHttpRequestException("Bad Request");
             var astronautDetail = person.AstronautDetail;
 
             if (astronautDetail == null)
