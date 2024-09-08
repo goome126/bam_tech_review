@@ -23,11 +23,22 @@ namespace StargateAPI.Business.Queries
         {
             var result = new GetPersonByNameResult();
 
-            var query = $"SELECT a.Id as PersonId, a.Name, b.CurrentRank, b.CurrentDutyTitle, b.CareerStartDate, b.CareerEndDate FROM [Person] a LEFT JOIN [AstronautDetail] b on b.PersonId = a.Id WHERE '{request.Name}' = a.Name";
+            var personToSearch = from person in _context.People
+                         join astronautDetail in _context.AstronautDetails
+                         on person.Id equals astronautDetail.PersonId into details
+                         from detail in details.DefaultIfEmpty()
+                         where person.Name == request.Name
+                         select new PersonAstronaut
+                         {
+                             PersonId = person.Id,
+                             Name = person.Name,
+                             CurrentRank = detail.CurrentRank,
+                             CurrentDutyTitle = detail.CurrentDutyTitle,
+                             CareerStartDate = detail.CareerStartDate,
+                             CareerEndDate = detail.CareerEndDate
+                         };
 
-            var person = await _context.Connection.QueryAsync<PersonAstronaut>(query);
-
-            result.Person = person.FirstOrDefault();
+            result.Person = personToSearch.FirstOrDefault();
 
             return result;
         }
