@@ -24,6 +24,8 @@ jobs:
       run: cd exercise1/api
     - name: check directory
       run: pwd
+    - name: check contents
+      run: ls
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
