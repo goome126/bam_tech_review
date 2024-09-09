@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,9 +16,9 @@ namespace StargateAPI.Migrations
                 name: "Person",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,13 +29,13 @@ namespace StargateAPI.Migrations
                 name: "AstronautDetail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PersonId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CurrentRank = table.Column<string>(type: "TEXT", nullable: false),
-                    CurrentDutyTitle = table.Column<string>(type: "TEXT", nullable: false),
-                    CareerStartDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CareerEndDate = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PersonId = table.Column<int>(type: "integer", nullable: false),
+                    CurrentRank = table.Column<string>(type: "text", nullable: false),
+                    CurrentDutyTitle = table.Column<string>(type: "text", nullable: false),
+                    CareerStartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CareerEndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,13 +52,13 @@ namespace StargateAPI.Migrations
                 name: "AstronautDuty",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PersonId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Rank = table.Column<string>(type: "TEXT", nullable: false),
-                    DutyTitle = table.Column<string>(type: "TEXT", nullable: false),
-                    DutyStartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DutyEndDate = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PersonId = table.Column<int>(type: "integer", nullable: false),
+                    Rank = table.Column<string>(type: "text", nullable: false),
+                    DutyTitle = table.Column<string>(type: "text", nullable: false),
+                    DutyStartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DutyEndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<StargateContext>(options => 
-    options.UseSqlite(builder.Configuration.GetConnectionString("StarbaseApiDatabase")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("StarbaseApiDatabase")));
 
 builder.Services.AddMediatR(cfg =>
 {

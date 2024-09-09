@@ -16,7 +16,22 @@ namespace StargateAPI.Business.Commands
 
         public required string DutyTitle { get; set; }
 
-        public DateTime DutyStartDate { get; set; }
+        public DateTime BackingDutyStartDate { get; set; }
+        public DateTime DutyStartDate
+        {
+            get => BackingDutyStartDate;
+            set
+            {
+                if (value.Kind == DateTimeKind.Unspecified)
+                {
+                    BackingDutyStartDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+                }
+                else
+                {
+                    BackingDutyStartDate = value.ToUniversalTime();
+                }
+            }
+        }
     }
 
     public class CreateAstronautDutyPreProcessor : IRequestPreProcessor<CreateAstronautDuty>
@@ -30,13 +45,24 @@ namespace StargateAPI.Business.Commands
 
         public Task Process(CreateAstronautDuty request, CancellationToken cancellationToken)
         {
-            var person = _context.People.AsNoTracking().FirstOrDefault(z => z.Name == request.Name);
+            var person = _context.People.AsNoTracking().Include(p => p.AstronautDuties).FirstOrDefault(z => z.Name == request.Name);
 
             if (person is null) throw new BadHttpRequestException("Bad Request");
 
             var verifyNoPreviousDuty = _context.AstronautDuties.FirstOrDefault(z => z.DutyTitle == request.DutyTitle && z.DutyStartDate == request.DutyStartDate);
 
             if (verifyNoPreviousDuty is not null) throw new BadHttpRequestException("Bad Request");
+
+            if (person.AstronautDuties is not null)
+            {
+                if(person.AstronautDuties.Count > 0)
+                {
+                    if (request.DutyStartDate.Date <= person.AstronautDuties.Where(ad => ad.DutyEndDate == null).First().DutyStartDate.Date)
+                    {
+                        throw new BadHttpRequestException("Bad Request");
+                    }
+                }
+            }
 
             return Task.CompletedTask;
         }
