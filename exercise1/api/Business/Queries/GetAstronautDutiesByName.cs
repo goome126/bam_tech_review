@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StargateAPI.Business.Data;
 using StargateAPI.Business.Dtos;
 using StargateAPI.Controllers;
@@ -25,18 +26,22 @@ namespace StargateAPI.Business.Queries
 
             var result = new GetAstronautDutiesByNameResult();
 
-            var query = $"SELECT a.Id as PersonId, a.Name, b.CurrentRank, b.CurrentDutyTitle, b.CareerStartDate, b.CareerEndDate FROM [Person] a LEFT JOIN [AstronautDetail] b on b.PersonId = a.Id WHERE \'{request.Name}\' = a.Name";
-
-            var person = await _context.Connection.QueryFirstOrDefaultAsync<PersonAstronaut>(query);
+            var requestPerson = await _context.People.Where(p => p.Name == request.Name).Include(ad => ad.AstronautDuties).Include(ad => ad.AstronautDetail).FirstOrDefaultAsync();
+            if(requestPerson is null) throw new BadHttpRequestException("Bad Request");
+            if (requestPerson.AstronautDetail is null) throw new BadHttpRequestException("Bad Request");
+            var person = new PersonAstronaut()
+            {
+                PersonId = requestPerson.Id,
+                Name = requestPerson.Name,
+                CurrentRank = requestPerson.AstronautDetail.CurrentRank,
+                CurrentDutyTitle = requestPerson.AstronautDetail.CurrentDutyTitle,
+                CareerStartDate = requestPerson.AstronautDetail.CareerStartDate,
+                CareerEndDate = requestPerson.AstronautDetail.CareerEndDate
+            };
 
             result.Person = person;
 
-            query = $"SELECT * FROM [AstronautDuty] WHERE {person.PersonId} = PersonId Order By DutyStartDate Desc";
-
-            var duties = await _context.Connection.QueryAsync<AstronautDuty>(query);
-
-            result.AstronautDuties = duties.ToList();
-
+            result.AstronautDuties = requestPerson.AstronautDuties.OrderByDescending(ad => ad.DutyStartDate).Select(ad => new AstronautDutyDTO(ad)).ToList();
             return result;
 
         }
@@ -45,6 +50,6 @@ namespace StargateAPI.Business.Queries
     public class GetAstronautDutiesByNameResult : BaseResponse
     {
         public PersonAstronaut Person { get; set; }
-        public List<AstronautDuty> AstronautDuties { get; set; } = new List<AstronautDuty>();
+        public List<AstronautDutyDTO> AstronautDuties { get; set; } = new List<AstronautDutyDTO>();
     }
 }
