@@ -18,6 +18,12 @@ exercise1/api/[Rr]elease/
 exercise1/api/x64/
 exercise1/api/[Bb]in/
 exercise1/api/[Oo]bj/
+
+exercise1/StargateTests/[Dd]ebug/
+exercise1/StargateTests/[Rr]elease/
+exercise1/StargateTests/x64/
+exercise1/StargateTests/[Bb]in/
+exercise1/StargateTests/[Oo]bj/
 # build folder is nowadays used for build scripts and should not be ignored
 #build/
 
