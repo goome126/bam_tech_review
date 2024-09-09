@@ -22,6 +22,8 @@ jobs:
         dotnet-version: 8.0.x
     - name: Navigate to project folder
       run: cd exercise1/api
+    - name: check directory
+      run: pwd
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
