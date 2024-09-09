@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+defaults:
+  run:
+    working-directory: exercise1/api
+
 jobs:
   build:
 
@@ -20,8 +24,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: Navigate to project folder
-      run: cd exercise1/api
     - name: check directory
       run: pwd
     - name: check contents
