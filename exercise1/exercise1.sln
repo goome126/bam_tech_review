@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StargateAPI", "api\StargateAPI.csproj", "{9BD9081C-6671-46F1-A3BE-2CA12BCE588B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StargateTests", "StargateTests\StargateTests.csproj", "{3357D11F-5E68-415E-B757-0CFDAF2A40E4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9BD9081C-6671-46F1-A3BE-2CA12BCE588B} = {9BD9081C-6671-46F1-A3BE-2CA12BCE588B}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
