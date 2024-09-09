@@ -7,15 +7,12 @@ namespace StargateAPI.Business.Dtos
         public AstronautDutyDTO(AstronautDuty astronautDuty)
         {
             Id = astronautDuty.Id;
-            PersonId = astronautDuty.PersonId;
             Rank = astronautDuty.Rank;
             DutyTitle = astronautDuty.DutyTitle;
             DutyStartDate = astronautDuty.DutyStartDate;
             DutyEndDate = astronautDuty.DutyEndDate;
         }
         public int Id { get; set; }
-
-        public int PersonId { get; set; }
 
         public string Rank { get; set; } = string.Empty;
 
