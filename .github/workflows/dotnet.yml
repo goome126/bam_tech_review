@@ -24,13 +24,10 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: check directory
-      run: pwd
-    - name: check contents
-      run: ls
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+      #Test the test project
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test StargateTests --no-build --verbosity normal 
