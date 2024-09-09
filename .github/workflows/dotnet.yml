@@ -28,6 +28,10 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: MoveToTestDirectory
+      run: cd ..
+    - name: PrintCurDir
+      run: pwd
       #Test the test project
     - name: Test
       run: dotnet test StargateTests --no-build --verbosity normal 
