@@ -31,4 +31,4 @@ jobs:
       #Test the test project
     - name: Test
       working-directory: exercise1/
-      run: dotnet test StargateTests --no-build --verbosity normal 
+      run: dotnet test StargateTests --verbosity normal 
