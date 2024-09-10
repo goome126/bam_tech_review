@@ -30,7 +30,7 @@ jobs:
 
     - name: Build, tag, and push Docker image
       env:
-        ECR_REPOSITORY: bamtech/newguy
+        ECR_REPOSITORY: bamtech/demo-acts
         AWS_REGION: us-west-2
         IMAGE_TAG: latest
         AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
@@ -39,7 +39,7 @@ jobs:
         docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
 
         # Tag the Docker image for ECR
-        docker tag $ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+        docker tag $ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
         # Push the image to ECR
-        docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
