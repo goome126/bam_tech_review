@@ -2,8 +2,9 @@ name: Build and Deploy Angular App to AWS S3
 
 on:
   push:
-    branches:
-      - frontend-dev
+    branches: [ "main","frontend-dev" ]
+  pull_request:
+    branches: [ "main","frontend-dev" ]
 defaults:
   run:
     working-directory: exercise1/stargate-frontend
