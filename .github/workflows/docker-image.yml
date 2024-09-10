@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+defaults:
+  run:
+    working-directory: exercise1/api
+
 jobs:
   build:
     runs-on: ubuntu-latest
