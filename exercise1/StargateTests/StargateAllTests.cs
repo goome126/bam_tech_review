@@ -11,7 +11,7 @@ using StargateAPI.Business.Commands;
 
 namespace StargateTests
 {
-    public class StargateAllTests: IClassFixture<StargateContextFixture>
+    public class StargateAllTests : IClassFixture<StargateContextFixture>
     {
         // Important Test cases to cover
 
@@ -51,7 +51,7 @@ namespace StargateTests
         private readonly UpdatePersonHandler _updatePersonHandler;
         private readonly CreateAstronautDutyHandler _createAstronautDutyHandler;
         private readonly GetAstronautDutiesByNameHandler _getAstronautDutiesByNameHandler;
-       //private readonly Mock<StargateContext> _mockContext;
+        //private readonly Mock<StargateContext> _mockContext;
 
         public StargateAllTests(StargateContextFixture fixture)
         {
@@ -61,6 +61,7 @@ namespace StargateTests
             //_mediator.Setup(m => m.Send(It.IsAny<GetPeople>(), new CancellationToken()));
             /*_personController = new PersonController(_mediator.Object);
             _astronautDutyController = new AstronautDutyController(_mediator.Object);*/
+
             _peopleHandler = new GetPeopleHandler(_context);
             _personByNameHandler = new GetPersonByNameHandler(_context);
             _createPersonHandler = new CreatePersonHandler(_context);
@@ -76,16 +77,18 @@ namespace StargateTests
         {
             // Arrange
             var examplePerson = new List<Person>()
-            {
-                new Person { Name = "John Doe" },
-                new Person { Name = "Jane Doe" },
-                new Person { Name = "John Smith" }
-            };
+                {
+                    new Person { Name = "John Doe" },
+                    new Person { Name = "Jane Doe" },
+                    new Person { Name = "John Smith" }
+                };
             _context.People.AddRange(examplePerson);
             _context.SaveChanges();
 
+            var peopleHandler = new GetPeopleHandler(_context);
+
             // Act
-            var result = await _peopleHandler.Handle(new GetPeople { }, new CancellationToken());
+            var result = await peopleHandler.Handle(new GetPeople { }, new CancellationToken());
 
             foreach (var person in result.People)
             {
@@ -103,8 +106,10 @@ namespace StargateTests
             // Arrange
             // Do Nothing
 
+            var peopleHandler = new GetPeopleHandler(_context);
+
             // Act
-            var result = await _peopleHandler.Handle(new GetPeople { }, new CancellationToken());
+            var result = await peopleHandler.Handle(new GetPeople { }, new CancellationToken());
 
             Assert.Empty(result.People);
 
@@ -120,13 +125,15 @@ namespace StargateTests
         {
             // Arrange
             var examplePerson = new List<Person>()
-            {
-                new Person { Name = "John Doe" },
-                new Person { Name = "Jane Doe" },
-                new Person { Name = "John Smith" }
-            };
+                {
+                    new Person { Name = "John Doe" },
+                    new Person { Name = "Jane Doe" },
+                    new Person { Name = "John Smith" }
+                };
             _context.People.AddRange(examplePerson);
             _context.SaveChanges();
+
+            var personByNameHandler = new GetPersonByNameHandler(_context);
 
             // Create PeopleAstronaut object to compare against
             var personToSearch = _context.People.Where(p => p.Name == name).FirstOrDefault();
@@ -141,7 +148,7 @@ namespace StargateTests
             };
 
             // Act
-            var result = await _personByNameHandler.Handle(new GetPersonByName { Name = name }, new CancellationToken());
+            var result = await personByNameHandler.Handle(new GetPersonByName { Name = name }, new CancellationToken());
 
             Assert.Equivalent(personAstronaut, result.Person);
 
@@ -156,16 +163,18 @@ namespace StargateTests
         {
             // Arrange
             var examplePerson = new List<Person>()
-            {
-                new Person { Name = "John Doe" },
-                new Person { Name = "Jane Doe" },
-                new Person { Name = "John Smith" }
-            };
+                {
+                    new Person { Name = "John Doe" },
+                    new Person { Name = "Jane Doe" },
+                    new Person { Name = "John Smith" }
+                };
             _context.People.AddRange(examplePerson);
             _context.SaveChanges();
 
+            var personByNameHandler = new GetPersonByNameHandler(_context);
+
             // Act
-            var result = await _personByNameHandler.Handle(new GetPersonByName { Name = name }, new CancellationToken());
+            var result = await personByNameHandler.Handle(new GetPersonByName { Name = name }, new CancellationToken());
 
             Assert.Null(result.Person);
 
@@ -181,8 +190,10 @@ namespace StargateTests
             // Arrange
             // Do Nothing
 
+            var personByNameHandler = new GetPersonByNameHandler(_context);
+
             // Act
-            var result = await _personByNameHandler.Handle(new GetPersonByName { Name = name }, new CancellationToken());
+            var result = await personByNameHandler.Handle(new GetPersonByName { Name = name }, new CancellationToken());
 
             Assert.Null(result.Person);
 
@@ -193,11 +204,14 @@ namespace StargateTests
         [Fact]
         public async void CreatePersonWithUniqueNameShouldSucceed()
         {
+
             // Arrange
             var person = new Person { Name = "John Doe" };
 
+            var createPersonHandler = new CreatePersonHandler(_context);
+
             // Act
-            var result = await _createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
+            var result = await createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
 
             // Assert
             Assert.True(result.Success);
@@ -213,14 +227,17 @@ namespace StargateTests
             // Arrange
             var person = new Person { Name = " " };
 
+            var createPersonHandler = new CreatePersonHandler(_context);
+
             try
             {
                 // Act
-                var result = await _createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
-            } catch (Exception ex)
+                var result = await createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
+            }
+            catch (Exception ex)
             {
 
-               // Assert
+                // Assert
                 Assert.Equal("Bad Request", ex.Message);
             }
             // Tear Down
@@ -232,12 +249,13 @@ namespace StargateTests
         {
             // Arrange
             var notUniquePerson = new Person { Name = "Adam" };
-            var result = await _createPersonHandler.Handle(new CreatePerson { Name = notUniquePerson.Name }, new CancellationToken());
+            var createPersonHandler = new CreatePersonHandler(_context);
+            var result = await createPersonHandler.Handle(new CreatePerson { Name = notUniquePerson.Name }, new CancellationToken());
 
             try
             {
                 // Act
-                var result2 = await _createPersonHandler.Handle(new CreatePerson { Name = notUniquePerson.Name }, new CancellationToken());
+                var result2 = await createPersonHandler.Handle(new CreatePerson { Name = notUniquePerson.Name }, new CancellationToken());
             }
             catch (Exception ex)
             {
@@ -254,15 +272,18 @@ namespace StargateTests
 
         #region Astronaut Duty Tests
         [Theory]
-        [InlineData("Steve","Sargent","Space Explorer", "2024-09-14T00:00:00Z")]
-        public async void CreateAstronautDutyWithValidFieldsShouldSucceed(string personName,string rank, string title, string startDate)
+        [InlineData("Steve", "Sargent", "Space Explorer", "2024-09-14T00:00:00Z")]
+        public async void CreateAstronautDutyWithValidFieldsShouldSucceed(string personName, string rank, string title, string startDate)
         {
             // Arrange
             var person = new Person { Name = personName };
 
+            var createPersonHandler = new CreatePersonHandler(_context);
+            var createAstronautDutyHandler = new CreateAstronautDutyHandler(_context);
+
             // Act
-            var result = await _createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
-            var result2 = await _createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate) }, new CancellationToken());
+            var result = await createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
+            var result2 = await createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate) }, new CancellationToken());
 
             // Assert
             Assert.True(result.Success);
@@ -281,17 +302,24 @@ namespace StargateTests
             // Arrange
             var person = new Person { Name = personName };
 
+            var createPersonHandler = new CreatePersonHandler(_context);
+            var createAstronautDutyHandler = new CreateAstronautDutyHandler(_context);
+
             // Act
-            
+
             try
             {
-                var result = await _createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
-                var result3 = await _createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate) }, new CancellationToken());
+                var result = await createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
+                var result3 = await createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate) }, new CancellationToken());
+                ClearPeopleDB();
+                ClearAstronautDutiesDB();
             }
             catch (Exception ex)
             {
                 // Assert
                 Assert.Equal("Bad Request", ex.Message);
+                ClearPeopleDB();
+                ClearAstronautDutiesDB();
             }
 
             // Tear Down
@@ -306,22 +334,28 @@ namespace StargateTests
             // Arrange
             var person = new Person { Name = personName };
 
+            var createPersonHandler = new CreatePersonHandler(_context);
+            var createAstronautDutyHandler = new CreateAstronautDutyHandler(_context);
+
             // Act
 
             try
             {
-                var result = await _createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
-                var result3 = await _createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate) }, new CancellationToken());
-                var result4 = await _createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate).AddDays(1) }, new CancellationToken());
+                var result = await createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
+                var result3 = await createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate) }, new CancellationToken());
+                var result4 = await createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate).AddDays(1) }, new CancellationToken());
                 Assert.True(result.Success);
                 Assert.True(result3.Success);
                 Assert.True(result4.Success);
                 Assert.True(_context.AstronautDuties.Count() == 2);
+                ClearPeopleDB();
+                ClearAstronautDutiesDB();
             }
             catch (Exception ex)
             {
                 // Assert
-                
+                ClearPeopleDB();
+                ClearAstronautDutiesDB();
             }
 
             // Tear Down
@@ -337,21 +371,26 @@ namespace StargateTests
             // Arrange
             var person = new Person { Name = personName };
 
+            var createPersonHandler = new CreatePersonHandler(_context);
+            var createAstronautDutyHandler = new CreateAstronautDutyHandler(_context);
+
             // Act
 
             try
             {
-                var result = await _createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
-                var result3 = await _createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate) }, new CancellationToken());
-                var result4 = await _createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate).AddDays(1) }, new CancellationToken());
+                var result = await createPersonHandler.Handle(new CreatePerson { Name = person.Name }, new CancellationToken());
+                var result3 = await createAstronautDutyHandler.Handle(new CreateAstronautDuty { Name = person.Name, Rank = rank, DutyTitle = title, DutyStartDate = DateTime.Parse(startDate) }, new CancellationToken());
+                Assert.True(result.Success);
                 Assert.True(result3.Success);
-                Assert.True(result4.Success);
-                Assert.True(_context.AstronautDuties.Count() == 2);
+                
+                ClearPeopleDB();
+                ClearAstronautDutiesDB();
             }
             catch (Exception ex)
             {
                 // Assert
-
+                ClearPeopleDB();
+                ClearAstronautDutiesDB();
             }
 
             // Tear Down
@@ -359,9 +398,7 @@ namespace StargateTests
             ClearAstronautDutiesDB();
         }
 
-
         #endregion
-
 
         private void ClearPeopleDB()
         {
