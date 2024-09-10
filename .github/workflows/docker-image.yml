@@ -30,7 +30,7 @@ jobs:
 
     - name: Build, tag, and push Docker image
       env:
-        ECR_REPOSITORY: 062232607987.dkr.ecr.us-west-2.amazonaws.com/bamtech/test
+        ECR_REPOSITORY: 062232607987.dkr.ecr.us-west-2.amazonaws.com/bamtech/newGuy
         AWS_REGION: us-west-2
         IMAGE_TAG: latest
         AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
