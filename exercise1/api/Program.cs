@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using StargateAPI.Business.Commands;
 using StargateAPI.Business.Data;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +23,12 @@ builder.Services.AddMediatR(cfg =>
     cfg.AddRequestPreProcessor<CreatePersonPreProcessor>();
     cfg.AddRequestPreProcessor<UpdatePersonPreProcessor>();
     cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly);
+});
+
+builder.Services.AddLogging(cfg =>
+{
+    cfg.AddConfiguration(builder.Configuration.GetSection("Logging"));  // Pulling from appsettings.json
+    cfg.AddDbLogger();  // Use your extension method
 });
 
 var app = builder.Build();

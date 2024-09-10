@@ -13,6 +13,21 @@ namespace StargateAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "LogEntries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Message = table.Column<string>(type: "text", nullable: false),
+                    LogLevel = table.Column<int>(type: "integer", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LogEntries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Person",
                 columns: table => new
                 {
@@ -34,8 +49,8 @@ namespace StargateAPI.Migrations
                     PersonId = table.Column<int>(type: "integer", nullable: false),
                     CurrentRank = table.Column<string>(type: "text", nullable: false),
                     CurrentDutyTitle = table.Column<string>(type: "text", nullable: false),
-                    CareerStartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CareerEndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    CareerStartDate = table.Column<DateTime>(type: "timestamptz", nullable: false),
+                    CareerEndDate = table.Column<DateTime>(type: "timestamptz", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,8 +72,8 @@ namespace StargateAPI.Migrations
                     PersonId = table.Column<int>(type: "integer", nullable: false),
                     Rank = table.Column<string>(type: "text", nullable: false),
                     DutyTitle = table.Column<string>(type: "text", nullable: false),
-                    DutyStartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DutyEndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    DutyStartDate = table.Column<DateTime>(type: "timestamptz", nullable: false),
+                    DutyEndDate = table.Column<DateTime>(type: "timestamptz", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -91,6 +106,9 @@ namespace StargateAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "AstronautDuty");
+
+            migrationBuilder.DropTable(
+                name: "LogEntries");
 
             migrationBuilder.DropTable(
                 name: "Person");

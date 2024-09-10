@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using StargateAPI.Business.Commands;
 using StargateAPI.Business.Queries;
 using System.Net;
+using System.Text.Json;
 
 namespace StargateAPI.Controllers
 {
@@ -10,10 +11,12 @@ namespace StargateAPI.Controllers
     [Route("[controller]")]
     public class AstronautDutyController : ControllerBase
     {
+        private readonly ILogger<AstronautDutyController> _logger;
         private readonly IMediator _mediator;
-        public AstronautDutyController(IMediator mediator)
+        public AstronautDutyController(IMediator mediator, ILogger<AstronautDutyController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpGet("{name}")]
@@ -26,10 +29,12 @@ namespace StargateAPI.Controllers
                     Name = name
                 });
 
+                _logger.Log(LogLevel.Information, $"Got astronaut duties: {JsonSerializer.Serialize(result)}");
                 return this.GetResponse(result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return this.GetResponse(new BaseResponse()
                 {
                     Message = ex.Message,
