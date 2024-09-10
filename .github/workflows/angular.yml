@@ -32,7 +32,7 @@ jobs:
       uses: actions/upload-artifact@v3.2.1-node20
       with:
         name: build-output
-        path: dist/stargate-frontend
+        path: /home/runner/work/bam_tech_review/bam_tech_review/exercise1/stargate-frontend/dist/stargate-frontend
 
   deploy:
     runs-on: ubuntu-latest
