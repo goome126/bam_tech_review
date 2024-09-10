@@ -12,7 +12,7 @@
 # https://github.com/dotnet/dotnet-docker/blob/main/samples/README.md
 
 # Create a stage for building the application.
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 COPY . /source
 
